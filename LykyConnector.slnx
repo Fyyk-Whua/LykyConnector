@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LykyConnector.App/LykyConnector.App.csproj" />
+    <Project Path="src/LykyConnector.Core/LykyConnector.Core.csproj" />
+    <Project Path="src/LykyConnector.Watchdog/LykyConnector.Watchdog.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LykyConnector.Core.Tests/LykyConnector.Core.Tests.csproj" />
+  </Folder>
+</Solution>
