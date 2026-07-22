@@ -28,7 +28,7 @@
 | 模块 | 名称 | 状态 | 完成时间 | 备注 |
 |------|------|------|----------|------|
 | M1.1 | 签名服务 SignService | ✅ | 2026-07-23 | MD5+Base64，6项测试全通过，与文档示例一致 |
-| M1.2 | HTTP 客户端 LykyApiClient | ⬜ | — | 依赖 M1.1 |
+| M1.2 | HTTP 客户端 LykyApiClient | ✅ | 2026-07-23 | 签名注入+POST+Polly重试+RetryOn500/NoRetryOn400，3项测试通过 |
 | M1.3 | 配置与加密存储 | ✅ | 2026-07-23 | AppConfig + DPAPI + SQLite ConfigStore，3项测试通过 |
 
 ---
