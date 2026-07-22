@@ -1,6 +1,6 @@
 # LykyConnector — 邻医云 B2C 开放平台对接程序
 
-> 药店桌面常驻对接网关 | C# .NET 8 + WPF + Kestrel + SQLite
+> 药店桌面常驻对接网关 | C# .NET 10 + WPF + Kestrel + SQLite
 > 仓库：https://github.com/Fyyk-Whua/LykyConnector
 
 ---
@@ -240,7 +240,7 @@ M0.1 项目骨架 → M1.1 签名 → M1.2 HTTP客户端 → M4.1/M4.2 同步接
 ### 环境要求
 
 - Windows 10/11（最低 Windows 7 SP1）
-- .NET 8 SDK（https://dotnet.microsoft.com/download/dotnet/8.0）
+- .NET 10 SDK（https://dotnet.microsoft.com/download/dotnet/10.0）
 - Git
 
 ### 克隆与构建
@@ -276,13 +276,30 @@ dotnet run --project src/LykyConnector.Watchdog
 
 - [x] 方案设计（需求分析 / 架构 / 界面 / 功能列表）
 - [x] 开发计划与 AI 提示词（26 模块拆解）
-- [x] GitHub 仓库与项目骨架
-- [ ] M0.1 项目骨架（编码中）
-- [ ] M1.1 签名服务
+- [x] M0.1 项目骨架
+- [x] M1.1 签名服务（6 测试通过）
+- [x] M1.2 HTTP 客户端（3 测试通过）
+- [x] M1.3 配置与加密存储（3 测试通过）
+- [x] M3.1 SQLite 消息队列（6 测试通过）
+- [x] M3.2 消息消费调度（1 测试通过）
+- [x] M4.1 商品同步接口（3 测试通过）
+- [x] M4.2 订单同步接口（3 测试通过）
+- [ ] M4.3 ERP 适配器
 - [ ] … 后续模块
 
 ---
 
-## 十、许可证
+## 十、已确认决策
+
+| 编号 | 决策 | 结论 |
+|------|------|------|
+| .NET 版本 | 使用 10.0 | `net10.0-windows`，生成独立 WinExe |
+| 主题色 | 浅蓝色系 | 主色 #378ADD，浅底 #E6F1FB |
+| ERP 模式 | 双模支持 | HTTP + DB，按配置文件 Mode 切换 |
+| 打包 | 独立 exe | 每轮修改后重新 build 生成 LykyConnector.App.exe |
+
+---
+
+## 十一、许可证
 
 MIT License
