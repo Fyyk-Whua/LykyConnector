@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Windows;
 
 namespace LykyConnector.App;
@@ -14,5 +15,17 @@ public partial class MainWindow : Window
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
         InitializeComponent();
+    }
+
+    private void Window_Closing(object sender, CancelEventArgs e)
+    {
+        if (App.IsExiting)
+        {
+            e.Cancel = false;
+            return;
+        }
+
+        e.Cancel = true;
+        Hide();
     }
 }

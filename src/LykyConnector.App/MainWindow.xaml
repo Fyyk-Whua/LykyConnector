@@ -3,13 +3,121 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:LykyConnector.App.ViewModels"
         mc:Ignorable="d"
-        Icon="app.ico">
-    <Grid>
-        <TextBlock Text="启动中..."
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="16"
-                   Foreground="#888780"/>
+        Icon="app.ico"
+        Closing="Window_Closing">
+    <Window.Resources>
+        <Color x:Key="PrimaryColor">#378ADD</Color>
+        <Color x:Key="PrimaryLightColor">#E6F1FB</Color>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#378ADD"/>
+        <SolidColorBrush x:Key="PrimaryLightBrush" Color="#E6F1FB"/>
+        <SolidColorBrush x:Key="TextPrimaryBrush" Color="#2C2C2A"/>
+        <SolidColorBrush x:Key="TextSecondaryBrush" Color="#888780"/>
+        <SolidColorBrush x:Key="BorderBrush" Color="#D3D1C7"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#1D9E75"/>
+        <SolidColorBrush x:Key="BgBrush" Color="#FAFAFA"/>
+    </Window.Resources>
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+
+    <Grid Background="{StaticResource BgBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="48"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="28"/>
+        </Grid.RowDefinitions>
+
+        <!-- 顶栏 -->
+        <Border Grid.Row="0" Background="White" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0,0.5">
+            <Grid Margin="16,0">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center">
+                    <Ellipse Width="10" Height="10" Fill="{StaticResource SuccessBrush}" Margin="0,0,8,0"/>
+                    <TextBlock Text="邻医云对接服务" FontSize="14" FontWeight="500"
+                               Foreground="{StaticResource TextPrimaryBrush}" VerticalAlignment="Center"/>
+                    <TextBlock Text="|" Foreground="{StaticResource BorderBrush}" Margin="12,0" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding StoreInfo}" FontSize="12"
+                               Foreground="{StaticResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                </StackPanel>
+                <Button HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Content=" 管理" FontSize="12" Padding="10,5"
+                        Background="Transparent" Foreground="{StaticResource TextSecondaryBrush}"
+                        BorderBrush="{StaticResource BorderBrush}" BorderThickness="0.5"
+                        Cursor="Hand">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="8"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+        </Border>
+
+        <!-- 主内容区 -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="160"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧导航 -->
+            <Border Grid.Column="0" Background="White"
+                    BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0,0.5,0"
+                    Padding="8,12">
+                <ItemsControl ItemsSource="{Binding NavItems}" Margin="0">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border x:Name="NavBorder" Padding="12,9" Margin="0,2"
+                                    CornerRadius="8" Cursor="Hand"
+                                    Background="Transparent">
+                                <TextBlock Text="{Binding Name}" FontSize="13"
+                                           Foreground="{StaticResource TextSecondaryBrush}"/>
+                            </Border>
+                            <DataTemplate.Triggers>
+                                <DataTrigger Binding="{Binding}" Value="{Binding DataContext.SelectedNav, RelativeSource={RelativeSource AncestorType=Window}}" >
+                                    <Setter TargetName="NavBorder" Property="Background" Value="{StaticResource PrimaryLightBrush}"/>
+                                    <Setter TargetName="NavBorder" Property="TextBlock.Foreground" Value="{StaticResource PrimaryBrush}"/>
+                                </DataTrigger>
+                            </DataTemplate.Triggers>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <!-- 内容区 -->
+            <Border Grid.Column="1" Background="{StaticResource BgBrush}" Padding="16">
+                <ContentControl Content="准备就绪" FontSize="14"
+                                Foreground="{StaticResource TextSecondaryBrush}"
+                                HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+        </Grid>
+
+        <!-- 底部状态栏 -->
+        <Border Grid.Row="2" Background="White"
+                BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,0.5,0,0"
+                Padding="16,0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondaryBrush}">
+                    <Run Text="网络 "/><Run Text="{Binding StatusNetwork}" FontWeight="500" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </TextBlock>
+                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="16,0,0,0">
+                    <Run Text="ERP "/><Run Text="{Binding StatusErp}" FontWeight="500" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </TextBlock>
+                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="16,0,0,0">
+                    <Run Text="队列 "/><Run Text="{Binding StatusQueueCount}" FontWeight="500" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </TextBlock>
+                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="16,0,0,0">
+                    <Run Text="CPU "/><Run Text="{Binding StatusCpu}" FontWeight="500" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </TextBlock>
+                <TextBlock FontSize="12" Foreground="{StaticResource TextSecondaryBrush}" Margin="16,0,0,0">
+                    <Run Text="内存 "/><Run Text="{Binding StatusMemory}" FontWeight="500" Foreground="{StaticResource TextPrimaryBrush}"/>
+                </TextBlock>
+                <TextBlock HorizontalAlignment="Right" FontSize="11"
+                           Foreground="{StaticResource TextSecondaryBrush}"
+                           Margin="16,0,0,0" VerticalAlignment="Center"
+                           Text="v1.0 · 进程保护已启用"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Windows;
+using LykyConnector.App.Services;
 using LykyConnector.Core.Config;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +11,8 @@ namespace LykyConnector.App;
 public partial class App : Application
 {
     private IHost? _host;
+    private TrayService? _tray;
+    internal static bool IsExiting { get; private set; }
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -24,6 +27,8 @@ public partial class App : Application
             .CreateLogger();
 
         Log.Information("邻医云对接服务启动");
+
+        _tray = new TrayService();
 
         var mainWindow = new MainWindow();
         MainWindow = mainWindow;
@@ -53,6 +58,8 @@ public partial class App : Application
 
     protected override async void OnExit(ExitEventArgs e)
     {
+        IsExiting = true;
+        _tray?.Dispose();
         if (_host != null)
         {
             await _host.StopAsync(TimeSpan.FromSeconds(5));
